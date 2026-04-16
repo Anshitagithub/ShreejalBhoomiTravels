@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script>
+    if (localStorage.getItem("auth") !== "true") {
+        window.location.href = "login.html";
+    }
+    </script>
+
+    <title>Blog – Shree Jal Bhoomi Travels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        :root{--forest:#1a3329;--deep:#0e1f18;--gold:#c8943a;--gold-light:#e8b55a;--cream:#f5f0e8;--white:#fdfaf5;--text:#3a3530;--muted:#7a7268;--border:rgba(200,148,58,0.25);}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Jost',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;background:rgba(14,31,24,0.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+        .site-brand{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.03em;}
+        .site-brand span{color:var(--gold);}
+        .nav-links{display:flex;gap:2.5rem;list-style:none;}
+        .nav-links a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
+        .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+        .nav-btn{display:none;background:none;border:none;color:white;font-size:1.4rem;cursor:pointer;}
+        .mobile-menu{display:none;position:fixed;inset:0;background:var(--deep);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+        .mobile-menu.open{display:flex;}
+        .mobile-menu a{color:white;font-size:1.4rem;font-family:'Cormorant Garamond',serif;text-decoration:none;}
+        .mobile-menu .close-btn{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;}
+
+        .page-header{padding:10rem 2rem 5rem;background:linear-gradient(135deg,var(--deep),var(--forest));text-align:center;position:relative;overflow:hidden;}
+        .page-header::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(200,148,58,0.1) 0%,transparent 65%);}
+        .page-header-label{display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;position:relative;z-index:1;}
+        .page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--white);line-height:1.1;position:relative;z-index:1;}
+        .page-header h1 em{font-style:italic;color:var(--gold-light);}
+        .page-header p{color:rgba(255,255,255,0.6);max-width:500px;margin:1rem auto 0;font-weight:300;line-height:1.8;position:relative;z-index:1;}
+
+        .blog-section{padding:6rem 2rem;}
+        .blog-inner{max-width:1100px;margin:0 auto;}
+        .section-label{display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+        .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.2;color:var(--forest);}
+        .section-title em{font-style:italic;}
+        .section-line{width:50px;height:2px;background:var(--gold);margin:1.5rem 0 3rem;}
+
+        .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+        .blog-card{background:white;border:1px solid rgba(0,0,0,0.08);border-radius:2px;overflow:hidden;transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;}
+        .blog-card:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:0 16px 50px rgba(200,148,58,0.12);}
+        .blog-card-img{position:relative;overflow:hidden;aspect-ratio:16/10;}
+        .blog-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s;}
+        .blog-card:hover .blog-card-img img{transform:scale(1.05);}
+        .blog-date{position:absolute;bottom:1rem;left:1rem;background:var(--gold);color:var(--deep);font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.75rem;border-radius:1px;}
+        .blog-card-body{padding:1.75rem;}
+        .blog-category{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);font-weight:600;display:block;margin-bottom:0.7rem;}
+        .blog-card-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--forest);line-height:1.4;margin-bottom:0.75rem;}
+        .blog-card-title a{text-decoration:none;color:inherit;transition:color 0.2s;}
+        .blog-card-title a:hover{color:var(--gold);}
+        .blog-card-text{color:var(--muted);font-size:0.85rem;line-height:1.8;font-weight:300;}
+        .blog-card-footer{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.75rem;border-top:1px solid rgba(0,0,0,0.06);}
+        .blog-read{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:gap 0.2s;}
+        .blog-read:hover{gap:0.7rem;}
+
+        footer{background:var(--deep);border-top:1px solid rgba(255,255,255,0.07);padding:4rem 2rem 2rem;}
+        .footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;margin-bottom:3rem;}
+        .footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:white;text-decoration:none;font-weight:600;display:block;margin-bottom:1rem;}
+        .footer-brand span{color:var(--gold);}
+        .footer-desc{color:rgba(255,255,255,0.45);font-size:0.85rem;line-height:1.8;margin-bottom:1.5rem;font-weight:300;}
+        .footer-socials{display:flex;gap:0.75rem;}
+        .footer-socials a{width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);border-radius:2px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;}
+        .footer-socials a:hover{border-color:var(--gold);color:var(--gold);}
+        .footer-heading{color:white;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;}
+        .footer-links{list-style:none;}
+        .footer-links li{margin-bottom:0.75rem;}
+        .footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}
+        .footer-links a:hover{color:var(--gold);}
+        .footer-subscribe input[type="email"]{width:100%;padding:0.8rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;font-family:'Jost',sans-serif;font-size:0.85rem;margin-bottom:0.75rem;border-radius:2px;outline:none;}
+        .footer-subscribe input[type="email"]::placeholder{color:rgba(255,255,255,0.3);}
+        .footer-subscribe button{width:100%;padding:0.8rem;background:var(--gold);color:var(--deep);border:none;font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:2px;}
+        .footer-bottom{max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,0.3);font-size:0.75rem;flex-wrap:wrap;gap:1rem;}
+
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s;}
+        .reveal.visible{opacity:1;transform:none;}
+
+        @media(max-width:900px){.nav-links{display:none;}.nav-btn{display:block;}.blog-grid{grid-template-columns:repeat(2,1fr);}.footer-grid{grid-template-columns:1fr 1fr;}}
+        @media(max-width:600px){.blog-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;}}
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="site-brand">Shree Jal <span>Bhoomi Travels</span></a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li><li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" id="closeBtn"><i class="fas fa-times"></i></button>
+    <a href="index.html">Home</a><a href="gallery.html">Gallery</a><a href="blog.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+    <span class="page-header-label">Travel Stories</span>
+    <h1>Our <em>Blog</em></h1>
+    <p>Real stories from real travelers — experiences, destinations, and memories made with Shree Jal Bhoomi Travels.</p>
+</header>
+
+<section class="blog-section">
+    <div class="blog-inner">
+        <div style="text-align:center;margin-bottom:4rem;" class="reveal">
+            <span class="section-label">Recent Posts</span>
+            <h2 class="section-title">Traveler <em>Stories</em></h2>
+            <div class="section-line" style="margin:1.5rem auto;"></div>
+        </div>
+        <div class="blog-grid reveal">
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/vikki vishnoi.jpg" alt="Shimla Trip" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600'">
+                    <span class="blog-date">Oct 28, 2021</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Family Travel</span>
+                    <h3 class="blog-card-title"><a href="#">Vishal Family Explores Shimla With Us</a></h3>
+                    <p class="blog-card-text">Our team provided warm hospitality and reliable transportation, ensuring the Vishal family's Shimla trip was smooth and truly memorable.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Vishaliyar Vishnoi</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/kamrunag anshul.jpg" alt="Kamrunag Temple" onerror="this.src='https://images.unsplash.com/photo-1571196165748-8e1bc5e8f7f5?w=600'">
+                    <span class="blog-date">Oct 28, 2021</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Pilgrimage</span>
+                    <h3 class="blog-card-title"><a href="#">Anshul Bhardwaj Explores Kamrunag Temple</a></h3>
+                    <p class="blog-card-text">Our team provided excellent transportation, ensuring Anshul Bhardwaj and his friends' pilgrimage to Kamrunag temple was smooth and fulfilling.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Anshul Bhardwaj</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/image.png" alt="Chamba Trip" onerror="this.src='https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600'">
+                    <span class="blog-date">Jan 2, 2022</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Heritage Travel</span>
+                    <h3 class="blog-card-title"><a href="#">Keshav Dutt Bhardwaj Explores Chamba</a></h3>
+                    <p class="blog-card-text">Keshav Dutt and his wife discovered the scenic beauty and rich heritage of Chamba with our well-organized transportation and local guidance.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Keshav Dutt Bhardwaj</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/neha kashayap.jpg" alt="Hattu Peak" onerror="this.src='https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=600'">
+                    <span class="blog-date">Jun 28, 2022</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Adventure</span>
+                    <h3 class="blog-card-title"><a href="#">Rahul Kumar Conquers Hattu Peak</a></h3>
+                    <p class="blog-card-text">Our agent provided Rahul with the best route to cover all the scenic spots near Hattu Peak — a journey she'll never forget.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Rahul Kumar</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/abhinav.jpg" alt="Kangra Palampur" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600'">
+                    <span class="blog-date">Jan 12, 2023</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Cultural Tour</span>
+                    <h3 class="blog-card-title"><a href="#">Abhinav Bhardwaj Tours Kangra &amp; Palampur</a></h3>
+                    <p class="blog-card-text">Abhinav explored the lush tea gardens of Palampur and the historic temples of Kangra — with the best restaurants and hospitality curated by our team.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Abhinav Bhardwaj</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/chitkul.jpg" alt="Chitkul" onerror="this.src='https://images.unsplash.com/photo-1617369120004-4930a3f30e03?w=600'">
+                    <span class="blog-date">Oct 28, 2024</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Hidden Gems</span>
+                    <h3 class="blog-card-title"><a href="#">Karan Sharma Discovers Chitkul Village</a></h3>
+                    <p class="blog-card-text">Our team helped Karan experience the magic of Chitkul — India's last village — with excellent transportation, hospitality, and local expertise.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Karan Sharma</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/anshi.jpg" alt="Kinnaur Kalpa" onerror="this.src='https://images.unsplash.com/photo-1551632811-561732d1e306?w=600'">
+                    <span class="blog-date">Oct 28, 2021</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Mountain Escape</span>
+                    <h3 class="blog-card-title"><a href="#">Anshu and Friends Explore Kinnaur &amp; Kalpa</a></h3>
+                    <p class="blog-card-text">Our agent guided Anshu and group efficiently through the stunning apple orchards and high-altitude villages of Kinnaur district.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Anshu &amp; Friends</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-card-img">
+                    <img src="gallery folder/kana hill.jpg" alt="Shimla Guneet" onerror="this.src='https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600'">
+                    <span class="blog-date">Jun 23, 2023</span>
+                </div>
+                <div class="blog-card-body">
+                    <span class="blog-category">Family Travel</span>
+                    <h3 class="blog-card-title"><a href="#">Guneet and Family's Perfect Shimla Getaway</a></h3>
+                    <p class="blog-card-text">A wonderful family trip to Shimla with seamless transportation arranged by our team — making every moment relaxed and enjoyable.</p>
+                </div>
+                <div class="blog-card-footer">
+                    <span style="color:var(--muted);font-size:0.8rem;">Guneet &amp; Family</span>
+                    <a href="#" class="blog-read">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <a href="index.html" class="footer-brand">Shree Jal <span>Bhoomi Travels</span></a>
+            <p class="footer-desc">Your trusted travel partner for unforgettable journeys across Himachal Pradesh and India's most scenic destinations.</p>
+            <div class="footer-socials">
+                <a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="footer-heading">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Popular Destinations</h4>
+            <ul class="footer-links">
+                <li><a href="#">Shimla &amp; Kufri</a></li><li><a href="#">Manali &amp; Rohtang</a></li>
+                <li><a href="#">Spiti Valley</a></li><li><a href="#">Leh Ladakh</a></li>
+                <li><a href="#">Uttarakhand</a></li><li><a href="#">Rajasthan</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Newsletter</h4>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:1rem;line-height:1.7;">Get travel tips and exclusive offers.</p>
+            <div class="footer-subscribe">
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2025 Shree Jal Bhoomi Travels. All rights reserved.</span>
+        <span>Made with &#10084; in Himachal Pradesh</span>
+    </div>
+</footer>
+<script>
+    document.getElementById('menuBtn').onclick = () => document.getElementById('mobileMenu').classList.add('open');
+    document.getElementById('closeBtn').onclick = () => document.getElementById('mobileMenu').classList.remove('open');
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+    reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

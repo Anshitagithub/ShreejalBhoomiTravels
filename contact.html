@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script>
+    if (localStorage.getItem("auth") !== "true") {
+        window.location.href = "login.html";
+    }
+    </script>
+
+    <title>Contact – Shree Jal Bhoomi Travels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        :root{--forest:#1a3329;--deep:#0e1f18;--gold:#c8943a;--gold-light:#e8b55a;--cream:#f5f0e8;--white:#fdfaf5;--text:#3a3530;--muted:#7a7268;--border:rgba(200,148,58,0.25);}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Jost',sans-serif;background:var(--white);color:var(--text);overflow-x:hidden;}
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;background:rgba(14,31,24,0.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,0.3);}
+        .site-brand{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.03em;}
+        .site-brand span{color:var(--gold);}
+        .nav-links{display:flex;gap:2.5rem;list-style:none;}
+        .nav-links a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
+        .nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+        .nav-btn{display:none;background:none;border:none;color:white;font-size:1.4rem;cursor:pointer;}
+        .mobile-menu{display:none;position:fixed;inset:0;background:var(--deep);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+        .mobile-menu.open{display:flex;}
+        .mobile-menu a{color:white;font-size:1.4rem;font-family:'Cormorant Garamond',serif;text-decoration:none;}
+        .mobile-menu .close-btn{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;}
+
+        .page-header{padding:10rem 2rem 5rem;background:linear-gradient(135deg,var(--deep),var(--forest));text-align:center;position:relative;overflow:hidden;}
+        .page-header::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(200,148,58,0.1) 0%,transparent 65%);}
+        .page-header-label{display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;position:relative;z-index:1;}
+        .page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--white);line-height:1.1;position:relative;z-index:1;}
+        .page-header h1 em{font-style:italic;color:var(--gold-light);}
+        .page-header p{color:rgba(255,255,255,0.6);max-width:500px;margin:1rem auto 0;font-weight:300;line-height:1.8;position:relative;z-index:1;}
+
+        .contact-section{padding:6rem 2rem;}
+        .contact-inner{max-width:1100px;margin:0 auto;}
+        .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+
+        .section-label{display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+        .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.2;color:var(--forest);}
+        .section-title em{font-style:italic;}
+        .section-line{width:50px;height:2px;background:var(--gold);margin:1.5rem 0 2.5rem;}
+
+        .contact-form{display:flex;flex-direction:column;gap:1rem;}
+        .form-group{display:flex;flex-direction:column;gap:0.4rem;}
+        .form-group label{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+        .form-control{width:100%;padding:1rem 1.2rem;border:1px solid rgba(0,0,0,0.12);background:white;font-family:'Jost',sans-serif;font-size:0.9rem;color:var(--text);border-radius:2px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+        .form-control:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,148,58,0.1);}
+        textarea.form-control{resize:vertical;min-height:140px;}
+        .btn-submit{padding:1rem 2.5rem;background:var(--gold);color:var(--deep);border:none;border-radius:2px;font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,transform 0.2s;display:inline-block;margin-top:0.5rem;}
+        .btn-submit:hover{background:var(--gold-light);transform:translateY(-2px);}
+
+        .contact-info{display:flex;flex-direction:column;gap:0.5rem;}
+        .contact-item{display:flex;gap:1.25rem;padding:1.8rem;border:1px solid rgba(0,0,0,0.08);border-radius:2px;background:white;transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;}
+        .contact-item:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,148,58,0.1);}
+        .contact-icon{width:48px;height:48px;background:rgba(200,148,58,0.1);border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .contact-icon i{color:var(--gold);font-size:1.1rem;}
+        .contact-item-label{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.4rem;}
+        .contact-item p{color:var(--text);font-size:0.9rem;line-height:1.7;}
+
+        .map-section{background:var(--cream);padding:4rem 2rem;}
+        .map-inner{max-width:1100px;margin:0 auto;}
+        .map-placeholder{background:var(--forest);height:300px;border-radius:2px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;}
+        .map-placeholder a{color:var(--gold);text-decoration:none;}
+
+        footer{background:var(--deep);border-top:1px solid rgba(255,255,255,0.07);padding:4rem 2rem 2rem;}
+        .footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;margin-bottom:3rem;}
+        .footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:white;text-decoration:none;font-weight:600;display:block;margin-bottom:1rem;}
+        .footer-brand span{color:var(--gold);}
+        .footer-desc{color:rgba(255,255,255,0.45);font-size:0.85rem;line-height:1.8;margin-bottom:1.5rem;font-weight:300;}
+        .footer-socials{display:flex;gap:0.75rem;}
+        .footer-socials a{width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);border-radius:2px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;transition:border-color 0.2s,color 0.2s;}
+        .footer-socials a:hover{border-color:var(--gold);color:var(--gold);}
+        .footer-heading{color:white;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;}
+        .footer-links{list-style:none;}
+        .footer-links li{margin-bottom:0.75rem;}
+        .footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.85rem;transition:color 0.2s;}
+        .footer-links a:hover{color:var(--gold);}
+        .footer-subscribe input[type="email"]{width:100%;padding:0.8rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;font-family:'Jost',sans-serif;font-size:0.85rem;margin-bottom:0.75rem;border-radius:2px;outline:none;}
+        .footer-subscribe input[type="email"]::placeholder{color:rgba(255,255,255,0.3);}
+        .footer-subscribe button{width:100%;padding:0.8rem;background:var(--gold);color:var(--deep);border:none;font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:2px;}
+        .footer-bottom{max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,0.3);font-size:0.75rem;flex-wrap:wrap;gap:1rem;}
+
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s;}
+        .reveal.visible{opacity:1;transform:none;}
+
+        @media(max-width:900px){.nav-links{display:none;}.nav-btn{display:block;}.contact-grid{grid-template-columns:1fr;gap:3rem;}.footer-grid{grid-template-columns:1fr 1fr;}}
+        @media(max-width:600px){.footer-grid{grid-template-columns:1fr;}}
+
+        .reviews-section{
+    padding:5rem 2rem;
+    background:var(--cream);
+}
+.review-box{
+    max-width:700px;
+    margin:0 auto;
+    background:white;
+    padding:2rem;
+    border-radius:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+.stars{
+    display:flex;
+    gap:5px;
+    cursor:pointer;
+    font-size:1.5rem;
+    color:#ccc;
+}
+.stars i.active{ color:gold; }
+
+.review-list{
+    margin-top:2rem;
+}
+.review-item{
+    padding:1rem;
+    border-bottom:1px solid #eee;
+}
+.review-item strong{
+    color:var(--forest);
+}
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="site-brand">Shree Jal <span>Bhoomi Travels</span></a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li>
+        <li><a href="blog.html">Blog</a></li><li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <button class="nav-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" id="closeBtn"><i class="fas fa-times"></i></button>
+    <a href="index.html">Home</a><a href="gallery.html">Gallery</a><a href="blog.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+    <span class="page-header-label">Get in Touch</span>
+    <h1>Contact <em>Us</em></h1>
+    <p>We'd love to hear from you. Reach out to plan your next adventure or simply ask a question.</p>
+</header>
+
+<section class="contact-section">
+    <div class="contact-inner">
+        <div class="contact-grid reveal">
+            <!-- FORM -->
+            <div>
+                <span class="section-label">Send a Message</span>
+                <h2 class="section-title">Let's Plan Your <em>Journey</em></h2>
+                <div class="section-line"></div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="e.g. Ramesh Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">Interested Destination</label>
+                        <input type="text" id="destination" class="form-control" placeholder="e.g. Shimla, Manali, Leh...">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" class="form-control" placeholder="Tell us about your travel plans, dates, group size..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Message &nbsp; <i class="fas fa-arrow-right"></i></button>
+                </form>
+                <p id="form-success" style="display:none;margin-top:1rem;color:var(--forest);font-weight:500;"><i class="fas fa-check-circle" style="color:var(--gold);margin-right:0.5rem;"></i>Message sent! We'll get back to you soon.</p>
+            </div>
+
+            <!-- INFO -->
+            <div>
+                <span class="section-label">Find Us</span>
+                <h2 class="section-title">Our <em>Details</em></h2>
+                <div class="section-line"></div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <div class="contact-item-label">Phone</div>
+                            <p>+91 8580923674</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <div class="contact-item-label">Email</div>
+                            <p>shreejalbhoomitravels@gmail.com<br>mukesh@shreejalbhoomitravels.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <div class="contact-item-label">Address</div>
+                            <p>Ground Floor, Shree Jal Dev Bhavan<br>Village Mamla, PO Nanj, Tehsil Karsog<br>District Mandi, Himachal Pradesh 175011</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <div class="contact-item-label">Office Hours</div>
+                            <p>Monday – Saturday: 9 AM – 7 PM<br>Sunday: 10 AM – 5 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="reviews-section">
+    <div class="review-box">
+        <h2 class="section-title">Customer <em>Reviews</em></h2>
+        <div class="section-line"></div>
+
+        <!-- Name -->
+        <input type="text" id="reviewName" class="form-control" placeholder="Your Name" style="margin-bottom:10px;">
+
+        <!-- Stars -->
+        <div class="stars" id="starRating">
+            <i class="fas fa-star" data-value="1"></i>
+            <i class="fas fa-star" data-value="2"></i>
+            <i class="fas fa-star" data-value="3"></i>
+            <i class="fas fa-star" data-value="4"></i>
+            <i class="fas fa-star" data-value="5"></i>
+        </div>
+
+        <!-- Review -->
+        <textarea id="reviewText" class="form-control" placeholder="Write your review..." style="margin-top:10px;"></textarea>
+
+       <button type="button" class="btn-submit" onclick="submitReview()">Submit Review</button>
+
+        <!-- Display -->
+        <div class="review-list" id="reviewList"></div>
+    </div>
+</section>
+
+<div class="map-section">
+    <div class="map-inner">
+        <div class="map-placeholder">
+            <span>📍 &nbsp; Village Mamla, Karsog, Mandi, Himachal Pradesh &nbsp;·&nbsp; <a href="https://maps.google.com/?q=Karsog+Mandi+Himachal+Pradesh" target="_blank">Open in Google Maps</a></span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <a href="index.html" class="footer-brand">Shree Jal <span>Bhoomi Travels</span></a>
+            <p class="footer-desc">Your trusted travel partner for unforgettable journeys across Himachal Pradesh and India's most scenic destinations.</p>
+            <div class="footer-socials">
+                <a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="footer-heading">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li><li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Popular Destinations</h4>
+            <ul class="footer-links">
+                <li><a href="#">Shimla &amp; Kufri</a></li><li><a href="#">Manali &amp; Rohtang</a></li>
+                <li><a href="#">Spiti Valley</a></li><li><a href="#">Leh Ladakh</a></li>
+                <li><a href="#">Uttarakhand</a></li><li><a href="#">Rajasthan</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Newsletter</h4>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:1rem;line-height:1.7;">Get travel tips and exclusive offers.</p>
+            <div class="footer-subscribe">
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2025 Shree Jal Bhoomi Travels. All rights reserved.</span>
+        <span>Made with &#10084; in Himachal Pradesh</span>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+    (function(){
+        emailjs.init("cGW5NlmrFeQAIov9-");
+    })();
+
+    document.getElementById('menuBtn').onclick = () => document.getElementById('mobileMenu').classList.add('open');
+    document.getElementById('closeBtn').onclick = () => document.getElementById('mobileMenu').classList.remove('open');
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => 
+        entries.forEach(e => { 
+            if(e.isIntersecting) e.target.classList.add('visible'); 
+        }), {threshold:0.1}
+    );
+    reveals.forEach(r => observer.observe(r));
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const params = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            destination: document.getElementById("destination").value,
+            message: document.getElementById("message").value
+        };
+
+        emailjs.send("service_fdg3qki", "template_dogw02u", params)
+        .then(function() {
+            document.getElementById('form-success').style.display = 'block';
+            e.target.reset();
+            setTimeout(() => {
+                document.getElementById('form-success').style.display = 'none';
+            }, 5000);
+        }, function() {
+            alert("Failed to send message. Try again.");
+        });
+    }
+
+    window.rating = 0;
+
+// Star click
+document.querySelectorAll("#starRating i").forEach(star => {
+    star.addEventListener("click", function(){
+        window.rating = this.getAttribute("data-value");
+
+        document.querySelectorAll("#starRating i").forEach(s => s.classList.remove("active"));
+        for(let i=0;i<window.rating;i++){
+            document.querySelectorAll("#starRating i")[i].classList.add("active");
+        }
+    });
+});
+
+</script>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

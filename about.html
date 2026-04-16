@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script>
+    if (localStorage.getItem("auth") !== "true") {
+        window.location.href = "login.html";
+    }
+    </script>
+
+    <title>About Us – Shree Jal Bhoomi Travels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --forest:#1a3329;--deep:#0e1f18;--gold:#c8943a;--gold-light:#e8b55a;--cream:#f5f0e8;--white:#fdfaf5;--text:#3a3530;--muted:#7a7268;--border:rgba(200,148,58,0.25); }
+        html { scroll-behavior: smooth; }
+        body { font-family:'Jost',sans-serif; background:var(--white); color:var(--text); overflow-x:hidden; }
+        .navbar { position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;background:rgba(14,31,24,0.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,0.3); }
+        .site-brand { font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.03em; }
+        .site-brand span { color:var(--gold); }
+        .nav-links { display:flex;gap:2.5rem;list-style:none; }
+        .nav-links a { color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s; }
+        .nav-links a:hover,.nav-links a.active { color:var(--gold-light); }
+        .nav-btn { display:none;background:none;border:none;color:white;font-size:1.4rem;cursor:pointer; }
+        .mobile-menu { display:none;position:fixed;inset:0;background:var(--deep);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem; }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { color:white;font-size:1.4rem;font-family:'Cormorant Garamond',serif;text-decoration:none;letter-spacing:0.05em; }
+        .mobile-menu .close-btn { position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:1.5rem;cursor:pointer; }
+
+        .page-header { padding:10rem 2rem 5rem;background:linear-gradient(135deg,var(--deep),var(--forest));text-align:center;position:relative;overflow:hidden; }
+        .page-header::after { content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(200,148,58,0.1) 0%,transparent 65%); }
+        .page-header-label { display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;position:relative;z-index:1; }
+        .page-header h1 { font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;color:var(--white);line-height:1.1;position:relative;z-index:1; }
+        .page-header h1 em { font-style:italic;color:var(--gold-light); }
+        .page-header p { color:rgba(255,255,255,0.6);max-width:500px;margin:1rem auto 0;font-weight:300;line-height:1.8;position:relative;z-index:1; }
+
+        .section { padding:6rem 2rem; }
+        .section-inner { max-width:1100px;margin:0 auto; }
+        .section-label { display:block;font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem; }
+        .section-title { font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.2;color:var(--forest); }
+        .section-title em { font-style:italic; }
+        .section-line { width:50px;height:2px;background:var(--gold);margin:1.5rem 0 3rem; }
+
+        .story-grid { display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center; }
+        .story-img { position:relative; }
+        .story-img img { width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;display:block; }
+        .story-img::before { content:'';position:absolute;top:-1.5rem;left:-1.5rem;right:1.5rem;bottom:1.5rem;border:1px solid var(--border);z-index:-1;border-radius:2px; }
+        .story-badge { position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--gold);color:var(--deep);padding:1.5rem;text-align:center;min-width:140px; }
+        .story-badge strong { font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;display:block;line-height:1; }
+        .story-badge span { font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600; }
+        .story-text p { color:var(--muted);line-height:1.9;margin-bottom:1.2rem;font-weight:300; }
+        .story-text p strong { color:var(--text);font-weight:500; }
+
+        .facts-section { background:var(--forest); }
+        .facts-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center; }
+        .fact-item { padding:2.5rem 1rem; }
+        .fact-icon { font-size:2.5rem;color:var(--gold);margin-bottom:1rem;display:block; }
+        .fact-item strong { font-family:'Cormorant Garamond',serif;font-size:3rem;color:white;font-weight:600;display:block;line-height:1; }
+        .fact-item p { color:rgba(255,255,255,0.55);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.5rem; }
+
+        .team-section { background:var(--cream); }
+        .values-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem; }
+        .value-card { background:white;padding:2.5rem 2rem;border-radius:2px;border:1px solid rgba(0,0,0,0.08);transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s; }
+        .value-card:hover { border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 40px rgba(200,148,58,0.12); }
+        .value-icon { width:52px;height:52px;background:rgba(200,148,58,0.1);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem; }
+        .value-icon i { color:var(--gold);font-size:1.3rem; }
+        .value-card h3 { font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--forest);margin-bottom:0.8rem; }
+        .value-card p { color:var(--muted);font-size:0.88rem;line-height:1.8;font-weight:300; }
+
+        .btn-primary { background:var(--gold);color:var(--deep);padding:0.9rem 2.2rem;border:none;border-radius:2px;font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background 0.2s,transform 0.2s;display:inline-block; }
+        .btn-primary:hover { background:var(--gold-light);transform:translateY(-2px); }
+
+        footer { background:var(--deep);border-top:1px solid rgba(255,255,255,0.07);padding:4rem 2rem 2rem; }
+        .footer-grid { max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:3rem;margin-bottom:3rem; }
+        .footer-brand { font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:white;text-decoration:none;font-weight:600;display:block;margin-bottom:1rem; }
+        .footer-brand span { color:var(--gold); }
+        .footer-desc { color:rgba(255,255,255,0.45);font-size:0.85rem;line-height:1.8;margin-bottom:1.5rem;font-weight:300; }
+        .footer-socials { display:flex;gap:0.75rem; }
+        .footer-socials a { width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);border-radius:2px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:0.8rem;text-decoration:none;transition:border-color 0.2s,color 0.2s; }
+        .footer-socials a:hover { border-color:var(--gold);color:var(--gold); }
+        .footer-heading { color:white;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem; }
+        .footer-links { list-style:none; }
+        .footer-links li { margin-bottom:0.75rem; }
+        .footer-links a { color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.85rem;transition:color 0.2s; }
+        .footer-links a:hover { color:var(--gold); }
+        .footer-subscribe input[type="email"] { width:100%;padding:0.8rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;font-family:'Jost',sans-serif;font-size:0.85rem;margin-bottom:0.75rem;border-radius:2px;outline:none; }
+        .footer-subscribe input[type="email"]::placeholder { color:rgba(255,255,255,0.3); }
+        .footer-subscribe button { width:100%;padding:0.8rem;background:var(--gold);color:var(--deep);border:none;font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:2px; }
+        .footer-bottom { max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,0.3);font-size:0.75rem;flex-wrap:wrap;gap:1rem; }
+
+        .reveal { opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s; }
+        .reveal.visible { opacity:1;transform:none; }
+
+        @media(max-width:900px) { .nav-links{display:none;} .nav-btn{display:block;} .story-grid{grid-template-columns:1fr;gap:3rem;} .story-img::before{display:none;} .story-badge{right:1rem;} .facts-grid{grid-template-columns:repeat(2,1fr);} .values-grid{grid-template-columns:1fr 1fr;} .footer-grid{grid-template-columns:1fr 1fr;} }
+        @media(max-width:600px) { .facts-grid{grid-template-columns:1fr 1fr;} .values-grid{grid-template-columns:1fr;} .footer-grid{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="index.html" class="site-brand">Shree Jal <span>Bhoomi Travels</span></a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" id="closeBtn"><i class="fas fa-times"></i></button>
+    <a href="index.html">Home</a><a href="gallery.html">Gallery</a><a href="blog.html">Blog</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+    <span class="page-header-label">Who We Are</span>
+    <h1>Our <em>Story</em></h1>
+    <p>14 years of crafting journeys rooted in trust, passion, and the beauty of the mountains.</p>
+</header>
+
+<!-- OUR STORY -->
+<section class="section">
+    <div class="section-inner">
+        <div class="story-grid reveal">
+            <div class="story-img">
+                <img src="images/about image.jpeg" alt="Shree Jal Bhoomi Travels" onerror="this.style.background='var(--forest)'">
+                <div class="story-badge"><strong>14</strong><span>Years of Trust</span></div>
+            </div>
+            <div class="story-text">
+                <span class="section-label">Our Journey</span>
+                <h2 class="section-title">14 Years of <em>Experience</em></h2>
+                <div class="section-line"></div>
+                <p><strong>Welcome to Shree Jal Bhoomi Tour and Travels</strong> — your trusted travel partner with over 14 years of experience in crafting unforgettable journeys. Based in the heart of Himachal Pradesh, we specialize in personalized and reliable travel services across India's most scenic and spiritual destinations.</p>
+                <p>With a strong foundation built on trust, transparency, and a deep love for travel, we take pride in delivering seamless travel experiences — whether it's a family vacation, group tour, pilgrimage, or adventure escape.</p>
+                <p>Our deep local knowledge and commitment to customer satisfaction have earned us the loyalty of countless travelers over the years. At Shree Jal Bhoomi, we don't just plan trips — we create memories.</p>
+                <a href="contact.html" class="btn-primary" style="margin-top:1rem;">Start Your Journey</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FACTS -->
+<section class="section facts-section">
+    <div class="section-inner">
+        <div style="text-align:center;margin-bottom:3.5rem;" class="reveal">
+            <span class="section-label" style="color:var(--gold);">By the Numbers</span>
+            <h2 class="section-title" style="color:var(--cream);">Fun <em>Facts</em></h2>
+            <div class="section-line" style="margin:1.5rem auto;"></div>
+        </div>
+        <div class="facts-grid reveal">
+            <div class="fact-item">
+                <span class="fact-icon"><i class="fas fa-camera-retro"></i></span>
+                <strong>1100+</strong>
+                <p>Photos Taken</p>
+            </div>
+            <div class="fact-item">
+                <span class="fact-icon"><i class="fas fa-umbrella-beach"></i></span>
+                <strong>50</strong>
+                <p>Beaches Visited</p>
+            </div>
+            <div class="fact-item">
+                <span class="fact-icon"><i class="fas fa-mountain"></i></span>
+                <strong>14</strong>
+                <p>Mountains Climbed</p>
+            </div>
+            <div class="fact-item">
+                <span class="fact-icon"><i class="fas fa-users"></i></span>
+                <strong>5000+</strong>
+                <p>Happy Travelers</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VALUES -->
+<section class="section team-section">
+    <div class="section-inner">
+        <div style="text-align:center;" class="reveal">
+            <span class="section-label">What We Stand For</span>
+            <h2 class="section-title">Our <em>Values</em></h2>
+            <div class="section-line" style="margin:1.5rem auto;"></div>
+        </div>
+        <div class="values-grid reveal">
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-heart"></i></div>
+                <h3>Passion for Travel</h3>
+                <p>We genuinely love what we do. Every trip is planned with the same excitement and care we'd want for our own journey.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Trust & Transparency</h3>
+                <p>No hidden costs, no surprises. We believe in clear communication and honest dealings from the very first interaction.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <h3>Local Expertise</h3>
+                <p>Born and raised in Himachal Pradesh, our team's deep local knowledge gives you access to places only insiders know.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Safety First</h3>
+                <p>Your safety is our top priority. From mountain roads to high-altitude treks, we ensure every journey is safe and responsible.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Responsible Tourism</h3>
+                <p>We respect the natural and cultural heritage of the places we visit, promoting sustainable practices at every step.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><i class="fas fa-star"></i></div>
+                <h3>Excellence Always</h3>
+                <p>We hold ourselves to a high standard — from the quality of vehicles to the warmth of our hospitality, excellence is non-negotiable.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <a href="index.html" class="footer-brand">Shree Jal <span>Bhoomi Travels</span></a>
+            <p class="footer-desc">Your trusted travel partner for unforgettable journeys across Himachal Pradesh and India's most scenic destinations.</p>
+            <div class="footer-socials">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div>
+            <h4 class="footer-heading">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li><li><a href="gallery.html">Gallery</a></li>
+                <li><a href="blog.html">Blog</a></li><li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Popular Destinations</h4>
+            <ul class="footer-links">
+                <li><a href="#">Shimla &amp; Kufri</a></li><li><a href="#">Manali &amp; Rohtang</a></li>
+                <li><a href="#">Spiti Valley</a></li><li><a href="#">Leh Ladakh</a></li>
+                <li><a href="#">Uttarakhand</a></li><li><a href="#">Rajasthan</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="footer-heading">Newsletter</h4>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;margin-bottom:1rem;line-height:1.7;">Get travel tips and exclusive offers.</p>
+            <div class="footer-subscribe">
+                <input type="email" placeholder="Your email address">
+                <button>Subscribe</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2025 Shree Jal Bhoomi Travels. All rights reserved.</span>
+        <span>Made with &#10084; in Himachal Pradesh</span>
+    </div>
+</footer>
+<script>
+    document.getElementById('menuBtn').onclick = () => document.getElementById('mobileMenu').classList.add('open');
+    document.getElementById('closeBtn').onclick = () => document.getElementById('mobileMenu').classList.remove('open');
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
+    reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
